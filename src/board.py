@@ -20,15 +20,17 @@ PIECE_SQUARE_TABLES = {
 
 
 def evaluate_board(board: chess.Board, side: bool) -> int:
-    """Evaluate board from perspective of 'side' using material + PSTs."""
+    if board.is_checkmate():
+        return -999999 if board.turn == side else 999999
+    if board.is_stalemate() or board.is_insufficient_material():
+        return 0 
+
     score = 0
     piece_map = board.piece_map()
-
     endgame = board.queens == 0 or len(piece_map) < 10
 
     for square, piece in piece_map.items():
         value = material_values[piece.piece_type]
-
         pst_value = 0
         if piece.piece_type == chess.PAWN:
             pst_value = PIECE_SQUARE_TABLES["pawnsEnd" if endgame else "pawns"][piece.color][square]
@@ -44,7 +46,6 @@ def evaluate_board(board: chess.Board, side: bool) -> int:
             pst_value = PIECE_SQUARE_TABLES["kingEnd" if endgame else "kingMid"][piece.color][square]
 
         piece_score = value + pst_value
-
         if piece.color == side:
             score += piece_score
         else:

@@ -8,8 +8,8 @@ import chess.engine
 
 if __name__ == "__main__":
     board = chess.Board()
-    white_ai = AI(board, WHITE, depth=5)
-    black_ai = AI(board, BLACK, depth=5)
+    white_ai = AI(board, WHITE, depth=3)
+    black_ai = AI(board, BLACK, depth=3)
 
     time_white = []
     time_black = []
