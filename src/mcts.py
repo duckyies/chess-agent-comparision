@@ -53,7 +53,7 @@ class MCTS:
         Play heuristic-guided simulation instead of random moves.
         """
         score = self.heuristic_rollout(board, self.side, depth=self.rollout_depth)
-        return score / 1000  # normalize to ~0-1 for backpropagation
+        return score / 1000 
 
     def _backpropagate(self, node: MCTSNode, result: float):
         while node:
@@ -104,17 +104,14 @@ class MCTS:
                 break
             
             legal_moves = list(current_board.legal_moves)
-            # Heuristic sorting: captures > checks > promotion > others
             legal_moves.sort(key=lambda move: (
                 1000 if current_board.is_capture(move) else 0,
                 500 if current_board.gives_check(move) else 0,
                 self.evaluate_board_after_move(current_board, move, side)
             ), reverse=True)
 
-            # Pick the top 1–2 moves randomly
             top_moves = legal_moves[:2]
             move = random.choice(top_moves)
             current_board.push(move)
-            self.movesAnalyzed += 1   # count every heuristic-guided move
-        # Return heuristic evaluation at the end of the rollout
+            self.movesAnalyzed += 1   
         return evaluate_board(current_board, side)
