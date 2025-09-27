@@ -109,7 +109,7 @@ class AI:
                 if alpha >= beta:
                     break
             self.TT[key] = value
-            return value
+            return value 
 
     def getBestMove(self) -> chess.Move:
         best_value = -math.inf

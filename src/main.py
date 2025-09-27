@@ -6,19 +6,18 @@ import time
 import chess.svg
 import chess.engine
 from chess import Termination 
-
+from mcts import MCTS
 if __name__ == "__main__":
+
+    
     board = chess.Board()
-    white_ai = AI(board, chess.WHITE, depth=2) 
-    black_ai = AI(board, chess.BLACK, depth=3)
+    white_ai = AI(board, chess.WHITE, depth=3) 
+    black_ai = MCTS(board, chess.BLACK)
 
     time_white = []
     time_black = []
 
     while not board.is_game_over(): 
-        if board.can_claim_draw():
-            print("Draw claimed (fifty moves or threefold repetition)")
-            break
 
         before_time = time.time()
         white_best_move = white_ai.makeBestMove()
@@ -74,8 +73,8 @@ if __name__ == "__main__":
     else:
         print("Game over (undetermined outcome)")
 
-    print(f"\nBlack moves analyzed: {white_ai.movesAnalyzed}")
-    print(f"White moves analyzed: {black_ai.movesAnalyzed}\n")
+    print(f"\White moves analyzed: {white_ai.movesAnalyzed}")
+    print(f"Black moves analyzed: {black_ai.movesAnalyzed}\n")
 
     print(f"\nAverage time taken per move for white - {sum(time_white)/len(time_white)}")
     print(f"Average time taken per move for black - {sum(time_black)/len(time_black)}\n")
